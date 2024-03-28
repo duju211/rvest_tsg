@@ -81,7 +81,7 @@ We now want to find all news articles on the website. Therefore:
 
       rows |>
         html_attr("href") |>
-        map(url_parse) |>
+        map(\(x) url_parse(x)) |>
         map_chr("path")
     }
 

@@ -8,6 +8,6 @@ news_links <- function(tsg_host, news_path, articles_css) {
 
   rows |>
     html_attr("href") |>
-    map(url_parse) |>
+    map(\(x) url_parse(x)) |>
     map_chr("path")
 }
