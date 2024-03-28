@@ -13,6 +13,7 @@ editor_options:
   chunk_output_type: console
 creative_commons: CC BY
 repository_url: https://github.com/duju211/rvest_tsg
+base_url: https://www.datannery.com/posts/friendly-webscraping/
 ---
 
 ```{r setup, include=FALSE}
