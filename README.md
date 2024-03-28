@@ -1,7 +1,7 @@
 # Idea
 
-Scrape the website of one of my favorite football clubs to get an
-overview of the content there.
+Scrape the website of my local football club to get an overview of the
+content there.
 
 The CSS selectors were extracted using techniques described in this
 [wonderful tutorial](https://github.com/hadley/web-scraping). Mainly
@@ -62,7 +62,7 @@ that are links to news articles:
 
     articles_css <- ".more-link"
 
-We now want to find all news articles on the website. Therefore:
+We now want to find all news articles on the website:
 
 -   Modify the session path with ‘aktuelles’
 -   Scrape the website
@@ -97,9 +97,8 @@ Look at some example paths:
     ## [4] "/2022/09/27/regionalliga-balingen-bei-den-spatzen-2/"                    
     ## [5] "/2023/04/08/regionalliga-tsg-duepiert-primus-ulm/"
 
-We want to extract the content of every article. Therefore, we are
-looking for the following parts of the post by searching for specific
-CSS expressions:
+We want to extract the content of every article. We are looking for the
+following parts of the post by searching for specific CSS expressions:
 
 -   Title defined by ‘.gdlr-blog-title’
 -   Lines defined by ‘.avia\_textblock p’
@@ -200,4 +199,4 @@ And there you go! A complete website scraped in a polite way and
 displayed with a nice word cloud. Future updates of this analysis are
 quickly done, because only new content is scraped, and old content is
 saved in the background. Happy times! Looking forward to further
-adventures using the techniques introduced in the above.
+adventures using the techniques introduced in this blog post.

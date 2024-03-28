@@ -1,12 +1,9 @@
 ---
-title: "Untitled"
+title: "Friendly Webscraping"
 description: |
-  A new article created using the Distill format.
+  Scraping my local Football Club's News Data
 author:
-  - name: Nora Jones 
-    url: https://example.com/norajones
-    affiliation: Spacely Sprockets
-    affiliation_url: https://example.com/spacelysprokets
+  - name: Julian During
 date: "`r Sys.Date()`"
 output: distill::distill_article
 params:
@@ -14,6 +11,8 @@ params:
   plot_path: "tsg_word_cloud.png"
 editor_options: 
   chunk_output_type: console
+creative_commons: CC BY
+repository_url: https://github.com/duju211/rvest_tsg
 ---
 
 ```{r setup, include=FALSE}
@@ -26,7 +25,7 @@ df_manifest <- df_manifest_raw |>
 
 # Idea
 
-Scrape the website of one of my favorite football clubs to get an overview
+Scrape the website of my local football club to get an overview
 of the content there.
 
 The CSS selectors were extracted using techniques described in this
@@ -81,7 +80,7 @@ are links to news articles:
 #| code=df_manifest$command[df_manifest$name == "articles_css"]
 ```
 
-We now want to find all news articles on the website. Therefore:
+We now want to find all news articles on the website:
 
 * Modify the session path with '`r news_path`'
 * Scrape the website
@@ -112,8 +111,7 @@ Look at some example paths:
 paths_news
 ```
 
-We want to extract the content of every article. Therefore,
-we are looking for the
+We want to extract the content of every article. We are looking for the
 following parts of the post by searching for specific CSS expressions:
 
 ```{r, include=FALSE, eval=TRUE}
@@ -217,4 +215,4 @@ And there you go! A complete website scraped in a polite way and displayed with
 a nice word cloud. Future updates of this analysis are quickly done, because
 only new content is scraped, and old content is saved in the background.
 Happy times! Looking forward to further adventures using the techniques
-introduced in the above.
+introduced in this blog post.
