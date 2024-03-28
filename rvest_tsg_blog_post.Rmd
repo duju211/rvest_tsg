@@ -54,7 +54,7 @@ Define where to look for the data:
 ```
 
 We want to obey the scraping restrictions defined by the host.
-Therefore we introduce ourselves to the host and follow the restrictions
+Therefore, we introduce ourselves to the host and follow the restrictions
 defined in 'robots.txt'. This can be done using the `bow` function
 from the `polite` package:
 
@@ -112,7 +112,7 @@ Look at some example paths:
 paths_news
 ```
 
-We want to extract the content of every article. Therefore
+We want to extract the content of every article. Therefore,
 we are looking for the
 following parts of the post by searching for specific CSS expressions:
 
@@ -138,14 +138,14 @@ df_news <- map_df(paths_news, \(x) news(tsg_host, x, title_css, line_css))
 ```
 
 Applying this function multiple times and obeying the scraping restriction at
-the same time, can be quite time consuming. Therefore we defined in the 
-targets pipeline (have a look at '_targets.R'), that the function is executed
+the same time, can be quite time-consuming. Therefore, we defined in the 
+targets pipeline (take a look at '_targets.R'), that the function is executed
 exactly once per article. This means future runs of the pipeline will detect
-if a article is already scraped and only scrape newly added articles, making
+if an article is already scraped and only scrape newly added articles, making
 future runs of the pipeline much faster.
 
 Sometimes the content seems to be of solely technical nature. Define a regular
-expression to search for these lines:
+expression to search for these lines
 
 ```{r, eval=TRUE}
 #| code=df_manifest$command[df_manifest$name == "tech_regex"]
@@ -215,6 +215,6 @@ knitr::include_graphics(params$plot_path)
 
 And there you go! A complete website scraped in a polite way and displayed with
 a nice word cloud. Future updates of this analysis are quickly done, because
-only new content is scraped and old content is saved in the background.
+only new content is scraped, and old content is saved in the background.
 Happy times! Looking forward to further adventures using the techniques
 introduced in the above.

@@ -38,10 +38,10 @@ Define where to look for the data:
 
     tsg_url <- "https://www.tsg-fussball.de/"
 
-We want to obey the scraping restrictions defined by the host. Therefore
-we introduce ourselves to the host and follow the restrictions defined
-in ‘robots.txt’. This can be done using the `bow` function from the
-`polite` package:
+We want to obey the scraping restrictions defined by the host.
+Therefore, we introduce ourselves to the host and follow the
+restrictions defined in ‘robots.txt’. This can be done using the `bow`
+function from the `polite` package:
 
     tsg_host <- bow(tsg_url)
 
@@ -97,7 +97,7 @@ Look at some example paths:
     ## [4] "/2022/09/27/regionalliga-balingen-bei-den-spatzen-2/"                    
     ## [5] "/2023/04/08/regionalliga-tsg-duepiert-primus-ulm/"
 
-We want to extract the content of every article. Therefore we are
+We want to extract the content of every article. Therefore, we are
 looking for the following parts of the post by searching for specific
 CSS expressions:
 
@@ -120,14 +120,15 @@ Apply the function for each path:
     df_news <- map_df(paths_news, \(x) news(tsg_host, x, title_css, line_css))
 
 Applying this function multiple times and obeying the scraping
-restriction at the same time, can be quite time consuming. Therefore we
-defined in the targets pipeline (have a look at ’\_targets.R’), that the
+restriction at the same time, can be quite time-consuming. Therefore, we
+defined in the targets pipeline (take a look at ’\_targets.R’), that the
 function is executed exactly once per article. This means future runs of
-the pipeline will detect if a article is already scraped and only scrape
-newly added articles, making future runs of the pipeline much faster.
+the pipeline will detect if an article is already scraped and only
+scrape newly added articles, making future runs of the pipeline much
+faster.
 
 Sometimes the content seems to be of solely technical nature. Define a
-regular expression to search for these lines:
+regular expression to search for these lines
 
     tech_regex <- "xml"
 
@@ -197,6 +198,6 @@ Create word cloud:
 
 And there you go! A complete website scraped in a polite way and
 displayed with a nice word cloud. Future updates of this analysis are
-quickly done, because only new content is scraped and old content is
+quickly done, because only new content is scraped, and old content is
 saved in the background. Happy times! Looking forward to further
 adventures using the techniques introduced in the above.
