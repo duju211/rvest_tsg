@@ -1,0 +1,220 @@
+---
+title: "Untitled"
+description: |
+  A new article created using the Distill format.
+author:
+  - name: Nora Jones 
+    url: https://example.com/norajones
+    affiliation: Spacely Sprockets
+    affiliation_url: https://example.com/spacelysprokets
+date: "`r Sys.Date()`"
+output: distill::distill_article
+params:
+  interactive: TRUE
+  plot_path: "tsg_word_cloud.png"
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = !params$interactive)
+source("libraries.R")
+df_manifest_raw <- tar_manifest()
+df_manifest <- df_manifest_raw |>
+  mutate(command = str_glue("{name} <- {command}"))
+```
+
+# Idea
+
+Scrape the website of one of my favorite football clubs to get an overview
+of the content there.
+
+The CSS selectors were extracted using techniques described in this
+[wonderful tutorial](https://github.com/hadley/web-scraping).
+Mainly relying on the developer features of your web browser.
+
+If you want to reproduce this analysis, you have to perform the following steps:
+
+* Clone the [repository]()
+* Run `renv::restore()`
+* Run `targets::tar_make()`
+
+# Data
+
+The following libraries are used in this analysis:
+
+```{r, eval=FALSE}
+#| file="libraries.R"
+```
+
+Define where to look for the data:
+
+```{r tsg_url}
+#| code=df_manifest$command[df_manifest$name == "tsg_url"]
+```
+
+We want to obey the scraping restrictions defined by the host.
+Therefore we introduce ourselves to the host and follow the restrictions
+defined in 'robots.txt'. This can be done using the `bow` function
+from the `polite` package:
+
+```{r tsg_host}
+#| code=df_manifest$command[df_manifest$name == "tsg_host"]
+```
+
+These are the following for this example:
+
+```{r, eval=TRUE, echo=FALSE}
+bow(tar_read(tsg_url))
+```
+
+Define the path, where the news article of this website can be found:
+
+```{r, eval=TRUE}
+#| code=df_manifest$command[df_manifest$name == "news_path"]
+```
+
+Define the CSS selector, which identifies all elements on the websites that
+are links to news articles:
+
+```{r, eval=TRUE}
+#| code=df_manifest$command[df_manifest$name == "articles_css"]
+```
+
+We now want to find all news articles on the website. Therefore:
+
+* Modify the session path with '`r news_path`'
+* Scrape the website
+* Look for elements representing article links by searching for CSS selector
+'`r articles_css`'
+
+```{r}
+#| file="R/news_links.R"
+```
+
+```{r paths_news}
+#| code=df_manifest$command[df_manifest$name == "paths_news"]
+```
+
+```{r, eval=params$interactive, echo=FALSE}
+tar_load(paths_news)
+```
+
+In total we have `r length(paths_news)` articles to scrape.
+
+```{r, include=FALSE, eval=TRUE}
+paths_news <- sample(paths_news, 5)
+```
+
+Look at some example paths:
+
+```{r, eval=TRUE, echo=FALSE}
+paths_news
+```
+
+We want to extract the content of every article. Therefore
+we are looking for the
+following parts of the post by searching for specific CSS expressions:
+
+```{r, include=FALSE, eval=TRUE}
+#| code=df_manifest$command[df_manifest$name == "title_css"]
+```
+
+```{r, include=FALSE, eval=TRUE}
+#| code=df_manifest$command[df_manifest$name == "line_css"]
+```
+
+* Title defined by '`r title_css`'
+* Lines defined by '`r line_css`'
+
+```{r}
+#| file="R/news.R"
+```
+
+Apply the function for each path:
+
+```{r scrape_news}
+df_news <- map_df(paths_news, \(x) news(tsg_host, x, title_css, line_css))
+```
+
+Applying this function multiple times and obeying the scraping restriction at
+the same time, can be quite time consuming. Therefore we defined in the 
+targets pipeline (have a look at '_targets.R'), that the function is executed
+exactly once per article. This means future runs of the pipeline will detect
+if a article is already scraped and only scrape newly added articles, making
+future runs of the pipeline much faster.
+
+Sometimes the content seems to be of solely technical nature. Define a regular
+expression to search for these lines:
+
+```{r, eval=TRUE}
+#| code=df_manifest$command[df_manifest$name == "tech_regex"]
+```
+
+We now want to extract the words from the content we scraped. Before we do so
+with the `unnest_tokens` function from the `tidytext` package, we exclude
+some lines that have solely technical content, by searching for keyword
+'`r tech_regex`':
+
+```{r}
+#| file="R/words_raw.R"
+```
+
+```{r df_words_raw}
+#| code=df_manifest$command[df_manifest$name == "df_words_raw"]
+```
+
+Before further analysis of the content, exclude some words that are not relevant
+for this analysis:
+
+* German stopwords
+* English stopwords
+* Words that contain solely numeric characters
+
+```{r}
+#| file="R/words.R"
+```
+
+```{r df_words}
+#| code=df_manifest$command[df_manifest$name == "df_words"]
+```
+
+# Analysis
+
+We want to finish the analysis by creating a wordcloud of the scraped content.
+
+Define the number of top words:
+
+```{r, eval=TRUE}
+#| code=df_manifest$command[df_manifest$name == "top_n_words"]
+```
+
+Count all words and filter for top `r top_n_words`.
+
+```{r}
+#| file="R/words_count.R"
+```
+
+```{r df_words_count}
+#| code=df_manifest$command[df_manifest$name == "df_words_count"]
+```
+
+Create word cloud:
+
+```{r}
+#| file="R/vis_word_cloud.R"
+```
+
+```{r}
+#| code=df_manifest$command[df_manifest$name == "gg_word_cloud"]
+```
+
+```{r, echo=FALSE, eval=TRUE}
+knitr::include_graphics(params$plot_path)
+```
+
+And there you go! A complete website scraped in a polite way and displayed with
+a nice word cloud. Future updates of this analysis are quickly done, because
+only new content is scraped and old content is saved in the background.
+Happy times! Looking forward to further adventures using the techniques
+introduced in the above.
