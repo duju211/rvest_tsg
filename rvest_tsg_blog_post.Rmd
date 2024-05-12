@@ -96,8 +96,9 @@ We now want to find all news articles on the website:
 #| code=df_manifest$command[df_manifest$name == "paths_news"]
 ```
 
-```{r, eval=params$interactive, echo=FALSE}
-tar_load(paths_news)
+```{r, eval=TRUE, echo=FALSE}
+if (params$interactive)
+  tar_load(paths_news)
 ```
 
 In total we have `r length(paths_news)` articles to scrape.
