@@ -87,15 +87,15 @@ We now want to find all news articles on the website:
 
     paths_news <- news_links(tsg_host, news_path, articles_css)
 
-In total we have 432 articles to scrape.
+In total we have 436 articles to scrape.
 
 Look at some example paths:
 
-    ## [1] "/2024/02/01/regionalliga-tsg-mit-vier-weiteren-zugaengen-und-einem-abgang/"
-    ## [2] "/2021/11/15/regionalliga-tsg-trifft-auf-den-tabellenfuehrer/"              
-    ## [3] "/2022/04/01/kooperation-mit-dem-vfb-stuttgart/"                            
-    ## [4] "/2022/10/29/regionalliga-so-siegte-die-tsg-in-trier/"                      
-    ## [5] "/2023/05/07/regionalliga-balinger-11-gegen-trier/"
+    ## [1] "/2021/08/22/regionalliga-tsg-erneut-ohne-sieg/"            
+    ## [2] "/2024/02/16/regionalliga-finaler-testlauf-gegen-pforzheim/"
+    ## [3] "/2021/11/25/sparkassen-indoorcup-abgesagt/"                
+    ## [4] "/2022/04/04/osterei-gewinnspiel/"                          
+    ## [5] "/2022/11/05/regionalliga-10-gegen-wormatia-worms/"
 
 We want to extract the content of every article. We are looking for the
 following parts of the post by searching for specific CSS expressions:
