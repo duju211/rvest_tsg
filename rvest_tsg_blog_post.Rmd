@@ -183,7 +183,7 @@ for this analysis:
 
 We want to finish the analysis by creating a wordcloud of the scraped content.
 
-Define the number of top words:
+Define the number of words we want to display:
 
 ```{r, eval=TRUE}
 #| code=df_manifest$command[df_manifest$name == "top_n_words"]

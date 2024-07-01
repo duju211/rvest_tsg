@@ -87,15 +87,15 @@ We now want to find all news articles on the website:
 
     paths_news <- news_links(tsg_host, news_path, articles_css)
 
-In total we have 436 articles to scrape.
+In total we have 446 articles to scrape.
 
 Look at some example paths:
 
-    ## [1] "/2021/08/22/regionalliga-tsg-erneut-ohne-sieg/"            
-    ## [2] "/2024/02/16/regionalliga-finaler-testlauf-gegen-pforzheim/"
-    ## [3] "/2021/11/25/sparkassen-indoorcup-abgesagt/"                
-    ## [4] "/2022/04/04/osterei-gewinnspiel/"                          
-    ## [5] "/2022/11/05/regionalliga-10-gegen-wormatia-worms/"
+    ## [1] "/2021/09/17/regionalliga-am-sonntag-geht-es-nach-grossaspach/" 
+    ## [2] "/2024/03/07/regionalliga-sonne-pur-und-der-garten-kann-warten/"
+    ## [3] "/2021/12/22/vertragsverlangerung-martin-braun/"                
+    ## [4] "/2022/04/19/regionalliga-tsg-duepiert-titelkandidat-offenbach/"
+    ## [5] "/2022/11/24/7336/"
 
 We want to extract the content of every article. We are looking for the
 following parts of the post by searching for specific CSS expressions:
@@ -167,7 +167,7 @@ relevant for this analysis:
 We want to finish the analysis by creating a wordcloud of the scraped
 content.
 
-Define the number of top words:
+Define the number of words we want to display:
 
     top_n_words <- 200L
 
