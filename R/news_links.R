@@ -1,5 +1,5 @@
-news_links <- function(tsg_host, news_path, articles_css) {
-  host_news <- nod(tsg_host, path = news_path)
+news_links <- function(tsg_url, news_path, articles_css) {
+  host_news <- nod(bow(tsg_url), path = news_path)
 
   html <- scrape(host_news)
 

@@ -10,9 +10,9 @@ relying on the developer features of your web browser.
 If you want to reproduce this analysis, you have to perform the
 following steps:
 
--   Clone the [repository]()
--   Run `renv::restore()`
--   Run `targets::tar_make()`
+- Clone the [repository]()
+- Run `renv::restore()`
+- Run `targets::tar_make()`
 
 # Data
 
@@ -43,8 +43,6 @@ Therefore, we introduce ourselves to the host and follow the
 restrictions defined in ‘robots.txt’. This can be done using the `bow`
 function from the `polite` package:
 
-    tsg_host <- bow(tsg_url)
-
 These are the following for this example:
 
     ## <polite session> https://www.tsg-fussball.de/
@@ -64,15 +62,15 @@ that are links to news articles:
 
 We now want to find all news articles on the website:
 
--   Modify the session path with ‘aktuelles’
--   Scrape the website
--   Look for elements representing article links by searching for CSS
-    selector ‘.more-link’
+- Modify the session path with ‘aktuelles’
+- Scrape the website
+- Look for elements representing article links by searching for CSS
+  selector ‘.more-link’
 
 <!-- -->
 
-    news_links <- function(tsg_host, news_path, articles_css) {
-      host_news <- nod(tsg_host, path = news_path)
+    news_links <- function(tsg_url, news_path, articles_css) {
+      host_news <- nod(bow(tsg_url), path = news_path)
 
       html <- scrape(host_news)
 
@@ -85,33 +83,34 @@ We now want to find all news articles on the website:
         map_chr("path")
     }
 
-    paths_news <- news_links(tsg_host, news_path, articles_css)
+    paths_news <- news_links(tsg_url, news_path, articles_css)
 
-In total we have 446 articles to scrape.
+In total we have 697 articles to scrape.
 
 Look at some example paths:
 
-    ## [1] "/2021/09/17/regionalliga-am-sonntag-geht-es-nach-grossaspach/" 
-    ## [2] "/2024/03/07/regionalliga-sonne-pur-und-der-garten-kann-warten/"
-    ## [3] "/2021/12/22/vertragsverlangerung-martin-braun/"                
-    ## [4] "/2022/04/19/regionalliga-tsg-duepiert-titelkandidat-offenbach/"
-    ## [5] "/2022/11/24/7336/"
+    ## [1] "/2023/06/26/tsg-gold-stars-treffen-ein-volltreffer/"          
+    ## [2] "/2023/05/09/regionalliga-tsg-spielt-am-freitag-in-worms/"     
+    ## [3] "/2023/11/05/regionalliga-balinger-unentschieden-gegen-mainz/" 
+    ## [4] "/2022/04/01/kooperation-mit-dem-vfb-stuttgart/"               
+    ## [5] "/2024/03/06/regionalliga-dickl-und-die-chance-auf-die-3-liga/"
 
 We want to extract the content of every article. We are looking for the
 following parts of the post by searching for specific CSS expressions:
 
--   Title defined by ‘.gdlr-blog-title’
--   Lines defined by ‘.avia\_textblock p’
+- Title defined by ‘.gdlr-blog-title’
+- Lines defined by ‘.avia\_textblock p’
 
 <!-- -->
 
-    news <- function(tsg_host, path_news, title_css, line_css) {
-      host_detail <- nod(tsg_host, path_news)
+    news <- function(tsg_url, path_news, title_css, line_css) {
+      host_detail <- nod(bow(tsg_url), path_news)
       html_detail <- scrape(host_detail)
       tibble(
         title = html_element(html_detail, title_css) |> html_text2(),
         line = html_elements(html_detail, line_css) |> html_text2(),
-        path = path_news)
+        path = path_news
+      )
     }
 
 Apply the function for each path:
@@ -147,9 +146,9 @@ keyword ‘xml’:
 Before further analysis of the content, exclude some words that are not
 relevant for this analysis:
 
--   German stopwords
--   English stopwords
--   Words that contain solely numeric characters
+- German stopwords
+- English stopwords
+- Words that contain solely numeric characters
 
 <!-- -->
 
@@ -193,7 +192,7 @@ Create word cloud:
 
     gg_word_cloud <- vis_word_cloud(df_words_count)
 
-<img src="tsg_word_cloud.png" width="2100" />
+<img src="tsg_word_cloud.png" alt="" width="2100" />
 
 And there you go! A complete website scraped in a polite way and
 displayed with a nice word cloud. Future updates of this analysis are
