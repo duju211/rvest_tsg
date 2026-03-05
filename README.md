@@ -23,11 +23,13 @@ The following libraries are used in this analysis:
     library(conflicted)
     library(wordcloud)
     library(tidyverse)
+    library(stopwords)
     library(tidytext)
     library(distill)
     library(targets)
     library(assertr)
     library(polite)
+    library(withr)
     library(httr2)
     library(rvest)
     library(fs)
@@ -70,7 +72,8 @@ We now want to find all news articles on the website:
 <!-- -->
 
     news_links <- function(tsg_url, news_path, articles_css) {
-      host_news <- nod(bow(tsg_url), path = news_path)
+      host_news <- bow(tsg_url) |>
+        nod(path = news_path)
 
       html <- scrape(host_news)
 
@@ -85,15 +88,15 @@ We now want to find all news articles on the website:
 
     paths_news <- news_links(tsg_url, news_path, articles_css)
 
-In total we have 697 articles to scrape.
+In total we have 698 articles to scrape.
 
 Look at some example paths:
 
-    ## [1] "/2023/06/26/tsg-gold-stars-treffen-ein-volltreffer/"          
-    ## [2] "/2023/05/09/regionalliga-tsg-spielt-am-freitag-in-worms/"     
-    ## [3] "/2023/11/05/regionalliga-balinger-unentschieden-gegen-mainz/" 
-    ## [4] "/2022/04/01/kooperation-mit-dem-vfb-stuttgart/"               
-    ## [5] "/2024/03/06/regionalliga-dickl-und-die-chance-auf-die-3-liga/"
+    ## [1] "/2023/06/27/pressemitteilung-dfb_pokal/"                      
+    ## [2] "/2023/05/12/regionalliga-klare-niederlage-bei-wormatia-worms/"
+    ## [3] "/2023/11/08/regionalliga-mit-klarer-kante-nach-kassel/"       
+    ## [4] "/2022/04/02/spiele-heute-abgesagt/"                           
+    ## [5] "/2024/03/06/regionalliga-pinke-zeiten-bei-den-blauen/"
 
 We want to extract the content of every article. We are looking for the
 following parts of the post by searching for specific CSS expressions:
