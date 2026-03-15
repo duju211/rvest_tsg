@@ -14,6 +14,7 @@ editor_options:
 creative_commons: CC BY
 repository_url: https://github.com/duju211/rvest_tsg
 base_url: https://www.datannery.com/posts/friendly-webscraping/
+bibliography: grateful-refs.bib
 ---
 
 ```{r setup, include=FALSE}
@@ -218,3 +219,9 @@ a nice word cloud. Future updates of this analysis are quickly done, because
 only new content is scraped, and old content is saved in the background.
 Happy times! Looking forward to further adventures using the techniques
 introduced in this blog post.
+
+# Acknowledgments {.appendix}
+
+```{r, eval=TRUE, echo=FALSE}
+cite_packages(output = "paragraph", out.dir = ".", passive.voice = TRUE)
+```
